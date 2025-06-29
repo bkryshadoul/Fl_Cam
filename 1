@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Orlando Traffic Cameras</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    .camera {
+      margin: 1rem auto;
+      width: 100%;
+      max-width: 640px;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+  <h1>Live Orlando Traffic Cameras</h1>
+
+  <div class="camera">
+    <h3>I-4 at Maitland Blvd</h3>
+    <video id="camera1" controls></video>
+  </div>
+
+  <div class="camera">
+    <h3>I-4 at Kaley Ave</h3>
+    <video id="camera2" controls></video>
+  </div>
+
+  <script>
+    const cameras = [
+      {
+        id: 'camera1',
+        src: 'https://dim-se5.divas.cloud:8200/chan-6870/index.m3u8' // I-4 at Maitland (example)
+      },
+      {
+        id: 'camera2',
+        src: 'https://dim-se5.divas.cloud:8200/chan-6834/index.m3u8' // I-4 at Kaley (example)
+      }
+    ];
+
+    cameras.forEach(({ id, src }) => {
+      const video = document.getElementById(id);
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(src);
+        hls.attachMedia(video);
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = src;
+      }
+    });
+  </script>
+</body>
+</html>
